@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="mm.aeon.com.custommapper.emergencycontactinfo.EmergencyContactInfoCustomMapper">
+
+
+	<insert id="insertEmergencyContactInfo"
+		parameterType="mm.aeon.com.zgen.entity.DaEmergencyContactInfo"
+		useGeneratedKeys="true" keyProperty="daEmergencyContactInfoId">
+		insert into da_emergency_contact_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="daEmergencyContactInfoId != null">
+				da_emergency_contact_info_id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="relationship != null">
+				relationship,
+			</if>
+			<if test="relationshipOther != null">
+				relationship_other,
+			</if>
+			<if test="currentAddress != null">
+				current_address,
+			</if>
+			<if test="mobileNo != null">
+				mobile_no,
+			</if>
+			<if test="residentTelNo != null">
+				resident_tel_no,
+			</if>
+			<if test="otherPhoneNo != null">
+				other_phone_no,
+			</if>
+			<if test="createdTime != null">
+				created_time,
+			</if>
+			<if test="createdBy != null">
+				created_by,
+			</if>
+			<if test="updatedTime != null">
+				updated_time,
+			</if>
+			<if test="updatedBy != null">
+				updated_by,
+			</if>
+			<if test="delFlag != null">
+				del_flag,
+			</if>
+			<if test="daApplicationInfoId != null">
+				da_application_info_id,
+			</if>
+			<if test="currentAddressBuildingNo != null">
+		        current_address_building_no,
+		    </if>
+		    <if test="currentAddressRoomNo != null">
+		        current_address_room_no,
+		    </if>
+		    <if test="currentAddressFloor != null">
+		        current_address_floor,
+		    </if>
+		    <if test="currentAddressStreet != null">
+		        current_address_street,
+		    </if>
+		    <if test="currentAddressQtr != null">
+		        current_address_qtr,
+		    </if>
+		    <if test="currentAddressTownship != null">
+		        current_address_township,
+		    </if>
+		    <if test="currentAddressCity != null">
+		        current_address_city,
+		    </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="daEmergencyContactInfoId != null">
+				#{daEmergencyContactInfoId,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="relationship != null">
+				#{relationship,jdbcType=INTEGER},
+			</if>
+			<if test="relationshipOther != null">
+				#{relationshipOther,jdbcType=VARCHAR},
+			</if>
+			<if test="currentAddress != null">
+				#{currentAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="mobileNo != null">
+				#{mobileNo,jdbcType=VARCHAR},
+			</if>
+			<if test="residentTelNo != null">
+				#{residentTelNo,jdbcType=VARCHAR},
+			</if>
+			<if test="otherPhoneNo != null">
+				#{otherPhoneNo,jdbcType=VARCHAR},
+			</if>
+			<if test="createdTime != null">
+				#{createdTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createdBy != null">
+				#{createdBy,jdbcType=VARCHAR},
+			</if>
+			<if test="updatedTime != null">
+				#{updatedTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updatedBy != null">
+				#{updatedBy,jdbcType=VARCHAR},
+			</if>
+			<if test="delFlag != null">
+				#{delFlag,jdbcType=INTEGER},
+			</if>
+			<if test="daApplicationInfoId != null">
+				#{daApplicationInfoId,jdbcType=INTEGER},
+			</if>
+			<if test="currentAddressBuildingNo != null">
+		        #{currentAddressBuildingNo,jdbcType=VARCHAR},
+		    </if>
+		    <if test="currentAddressRoomNo != null">
+		        #{currentAddressRoomNo,jdbcType=VARCHAR},
+		    </if>
+		    <if test="currentAddressFloor != null">
+		        #{currentAddressFloor,jdbcType=VARCHAR},
+		    </if>
+		    <if test="currentAddressStreet != null">
+		        #{currentAddressStreet,jdbcType=VARCHAR},
+		    </if>
+		    <if test="currentAddressQtr != null">
+		        #{currentAddressQtr,jdbcType=VARCHAR},
+		    </if>
+		    <if test="currentAddressTownship != null">
+		        #{currentAddressTownship,jdbcType=INTEGER},
+		    </if>
+		    <if test="currentAddressCity != null">
+		        #{currentAddressCity,jdbcType=INTEGER},
+		    </if>
+		</trim>
+	</insert>
+
+</mapper>

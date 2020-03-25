@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="mm.aeon.com.custommapper.freemessage.FreeMessageCustomMapper">
+
+
+	<insert id="insertFreeCustomerInfo"
+		parameterType="mm.aeon.com.zgen.entity.FreeCustomerInfo"
+		useGeneratedKeys="true" keyProperty="freeCustomerInfoId">
+		insert into vcs.free_customer_info
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="freeCustomerInfoId != null">
+	        free_customer_info_id,
+	      </if>
+	      <if test="phoneNo != null">
+	        phone_no,
+	      </if>
+	      <if test="createdBy != null">
+	        created_by,
+	      </if>
+	      <if test="createdTime != null">
+	        created_time,
+	      </if>
+	      <if test="updatedBy != null">
+	        updated_by,
+	      </if>
+	      <if test="updatedTime != null">
+	        updated_time,
+	      </if>
+	      <if test="delFlag != null">
+	        del_flag,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="freeCustomerInfoId != null">
+	        #{freeCustomerInfoId,jdbcType=INTEGER},
+	      </if>
+	      <if test="phoneNo != null">
+	        #{phoneNo,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createdBy != null">
+	        #{createdBy,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createdTime != null">
+	        #{createdTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="updatedBy != null">
+	        #{updatedBy,jdbcType=VARCHAR},
+	      </if>
+	      <if test="updatedTime != null">
+	        #{updatedTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="delFlag != null">
+	        #{delFlag,jdbcType=SMALLINT},
+	      </if>
+	    </trim>
+	    ON CONFLICT (phone_no) DO UPDATE SET phone_no=EXCLUDED.phone_no RETURNING free_customer_info_id;
+  	</insert>
+  	
+  	<insert id="insertFreeCustRoomInfo" parameterType="mm.aeon.com.zgen.entity.FreeCustRoomInfo" useGeneratedKeys="true" keyProperty="freeCustRoomInfoId">
+	    insert into vcs.free_cust_room_info
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="freeCustRoomInfoId != null">
+	        free_cust_room_info_id,
+	      </if>
+	      <if test="freeCustomerInfoId != null">
+	        free_customer_info_id,
+	      </if>
+	      <if test="createdTime != null">
+	        created_time,
+	      </if>
+	      <if test="lastSendTime != null">
+	        last_send_time,
+	      </if>
+	      <if test="converLockFlag != null">
+	        conver_lock_flag,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="freeCustRoomInfoId != null">
+	        #{freeCustRoomInfoId,jdbcType=INTEGER},
+	      </if>
+	      <if test="freeCustomerInfoId != null">
+	        #{freeCustomerInfoId,jdbcType=INTEGER},
+	      </if>
+	      <if test="createdTime != null">
+	        #{createdTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastSendTime != null">
+	        #{lastSendTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="converLockFlag != null">
+	        #{converLockFlag,jdbcType=SMALLINT},
+	      </if>
+	    </trim>
+	    ON CONFLICT (free_customer_info_id) DO UPDATE SET free_customer_info_id=EXCLUDED.free_customer_info_id RETURNING free_cust_room_info_id;
+  </insert>
+  
+  <insert id="insertFreeAdminCustRoom" parameterType="map">
+		INSERT INTO free_admin_cust_room(
+			FREE_CUST_ROOM_INFO_ID,
+			USER_ID,
+			CREATED_TIME)
+		VALUES
+		<foreach collection="adminIdList" item="record"
+			index="index" open="(" separator="),(" close=")">
+			#{freeCustRoomInfoId, jdbcType=INTEGER},
+			#{record,jdbcType=INTEGER},
+			now()
+		</foreach>
+		ON CONFLICT (FREE_CUST_ROOM_INFO_ID, USER_ID) DO NOTHING;
+	</insert>
+
+</mapper>

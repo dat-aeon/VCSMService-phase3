@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mm.aeon.com.custommapper.newsinfo.NewsInfoCustomMapper">
+
+	<resultMap id="newsInfoResultMap" type="mm.aeon.com.dto.newsinfo.NewsInfoResDto">
+		<id column="NEWS_INFO_ID" jdbcType="INTEGER" property="newsInfoId" />
+		<result column="TITLE_ENG" jdbcType="VARCHAR" property="titleEng" />
+		<result column="TITLE_MYN" jdbcType="VARCHAR" property="titleMyn" />
+		<result column="CONTENT_ENG" jdbcType="VARCHAR" property="contentEng" />
+		<result column="CONTENT_MYN" jdbcType="VARCHAR" property="contentMyn" />
+		<result column="DISPLAY_DATE" jdbcType="DATE" property="displayDate" />
+		<result column="PUBLISHED_FROM_DATE" jdbcType="DATE" property="publishedFromDate" />
+		<result column="PUBLISHED_TO_DATE" jdbcType="DATE" property="publishedToDate" />
+		<result column="IMAGE_PATH" jdbcType="VARCHAR" property="imagePath" />
+		<result column="LONGITUDE" jdbcType="VARCHAR" property="longitude" />
+		<result column="LATITUDE" jdbcType="VARCHAR" property="latitude" />
+		<result column="NEWS_URL" jdbcType="VARCHAR" property="newsUrl" />
+	</resultMap>
+
+	<select id="getNewsInfoList" resultMap="newsInfoResultMap">
+		SELECT
+			NI.NEWS_INFO_ID,
+			NI.TITLE_ENG,
+			NI.TITLE_MYN,
+			NI.CONTENT_ENG,
+			NI.CONTENT_MYN,
+			NI.PUBLISHED_FROM_DATE AS DISPLAY_DATE,
+			NI.PUBLISHED_FROM_DATE,
+			NI.PUBLISHED_TO_DATE,
+			NI.IMAGE_PATH,
+			NI.LONGITUDE,
+			NI.LATITUDE,
+			NI.NEWS_URL
+		FROM
+			news_info NI
+		WHERE
+			NI.DEL_FLAG = 0
+		<![CDATA[
+			AND TO_CHAR(NI.PUBLISHED_FROM_DATE,'YYYYMMDD') <= TO_CHAR(now(),'YYYYMMDD')
+		]]>
+		<![CDATA[
+			AND TO_CHAR(NI.PUBLISHED_TO_DATE,'YYYYMMDD') >= TO_CHAR(now(),'YYYYMMDD')
+		]]>
+		ORDER BY
+			NI.PUBLISHED_FROM_DATE DESC, NI.NEWS_INFO_ID DESC
+	</select>
+
+</mapper>

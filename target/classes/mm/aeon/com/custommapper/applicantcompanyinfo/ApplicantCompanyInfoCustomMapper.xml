@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="mm.aeon.com.custommapper.applicantcompanyinfo.ApplicantCompanyInfoCustomMapper">
+
+	<insert id="insertApplicantCompanyInfo"
+		parameterType="mm.aeon.com.zgen.entity.DaApplicantCompanyInfo"
+		useGeneratedKeys="true" keyProperty="daApplicantCompanyInfoId">
+		insert into da_applicant_company_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="daApplicantCompanyInfoId != null">
+				da_applicant_company_info_id,
+			</if>
+			<if test="companyName != null">
+				company_name,
+			</if>
+			<if test="companyAddress != null">
+				company_address,
+			</if>
+			<if test="companyTelNo != null">
+				company_tel_no,
+			</if>
+			<if test="department != null">
+				department,
+			</if>
+			<if test="position != null">
+				position,
+			</if>
+			<if test="yearOfServiceYear != null">
+				year_of_service_year,
+			</if>
+			<if test="yearOfServiceMonth != null">
+				year_of_service_month,
+			</if>
+			<if test="companyStatus != null">
+				company_status,
+			</if>
+			<if test="companyStatusOther != null">
+				company_status_other,
+			</if>
+			<if test="monthlyBasicIncome != null">
+				monthly_basic_income,
+			</if>
+			<if test="otherIncome != null">
+				other_income,
+			</if>
+			<if test="totalIncome != null">
+				total_income,
+			</if>
+			<if test="createdTime != null">
+				created_time,
+			</if>
+			<if test="createdBy != null">
+				created_by,
+			</if>
+			<if test="updatedTime != null">
+				updated_time,
+			</if>
+			<if test="updatedBy != null">
+				updated_by,
+			</if>
+			<if test="delFlag != null">
+				del_flag,
+			</if>
+			<if test="contactTimeFrom != null">
+				contact_time_from,
+			</if>
+			<if test="contactTimeTo != null">
+				contact_time_to,
+			</if>
+			<if test="daApplicationInfoId != null">
+				da_application_info_id,
+			</if>
+			<if test="salaryDay != null">
+				salary_day,
+			</if>
+			<if test="companyAddressBuildingNo != null">
+				company_address_building_no,
+			</if>
+			<if test="companyAddressRoomNo != null">
+				company_address_room_no,
+			</if>
+			<if test="companyAddressFloor != null">
+				company_address_floor,
+			</if>
+			<if test="companyAddressStreet != null">
+				company_address_street,
+			</if>
+			<if test="companyAddressQtr != null">
+				company_address_qtr,
+			</if>
+			<if test="companyAddressTownship != null">
+				company_address_township,
+			</if>
+			<if test="companyAddressCity != null">
+				company_address_city,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="daApplicantCompanyInfoId != null">
+				#{daApplicantCompanyInfoId,jdbcType=INTEGER},
+			</if>
+			<if test="companyName != null">
+				#{companyName,jdbcType=VARCHAR},
+			</if>
+			<if test="companyAddress != null">
+				#{companyAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="companyTelNo != null">
+				#{companyTelNo,jdbcType=VARCHAR},
+			</if>
+			<if test="department != null">
+				#{department,jdbcType=VARCHAR},
+			</if>
+			<if test="position != null">
+				#{position,jdbcType=VARCHAR},
+			</if>
+			<if test="yearOfServiceYear != null">
+				#{yearOfServiceYear,jdbcType=INTEGER},
+			</if>
+			<if test="yearOfServiceMonth != null">
+				#{yearOfServiceMonth,jdbcType=INTEGER},
+			</if>
+			<if test="companyStatus != null">
+				#{companyStatus,jdbcType=INTEGER},
+			</if>
+			<if test="companyStatusOther != null">
+				#{companyStatusOther,jdbcType=VARCHAR},
+			</if>
+			<if test="monthlyBasicIncome != null">
+				#{monthlyBasicIncome,jdbcType=NUMERIC},
+			</if>
+			<if test="otherIncome != null">
+				#{otherIncome,jdbcType=NUMERIC},
+			</if>
+			<if test="totalIncome != null">
+				#{totalIncome,jdbcType=NUMERIC},
+			</if>
+			<if test="createdTime != null">
+				#{createdTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createdBy != null">
+				#{createdBy,jdbcType=VARCHAR},
+			</if>
+			<if test="updatedTime != null">
+				#{updatedTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updatedBy != null">
+				#{updatedBy,jdbcType=VARCHAR},
+			</if>
+			<if test="delFlag != null">
+				#{delFlag,jdbcType=BIT},
+			</if>
+			<if test="contactTimeFrom != null">
+				#{contactTimeFrom,jdbcType=VARCHAR},
+			</if>
+			<if test="contactTimeTo != null">
+				#{contactTimeTo,jdbcType=VARCHAR},
+			</if>
+			<if test="daApplicationInfoId != null">
+				#{daApplicationInfoId,jdbcType=INTEGER},
+			</if>
+			<if test="salaryDay != null">
+				#{salaryDay,jdbcType=INTEGER},
+			</if>
+			<if test="companyAddressBuildingNo != null">
+				#{companyAddressBuildingNo,jdbcType=VARCHAR},
+			</if>
+			<if test="companyAddressRoomNo != null">
+				#{companyAddressRoomNo,jdbcType=VARCHAR},
+			</if>
+			<if test="companyAddressFloor != null">
+				#{companyAddressFloor,jdbcType=VARCHAR},
+			</if>
+			<if test="companyAddressStreet != null">
+				#{companyAddressStreet,jdbcType=VARCHAR},
+			</if>
+			<if test="companyAddressQtr != null">
+				#{companyAddressQtr,jdbcType=VARCHAR},
+			</if>
+			<if test="companyAddressTownship != null">
+				#{companyAddressTownship,jdbcType=INTEGER},
+			</if>
+			<if test="companyAddressCity != null">
+				#{companyAddressCity,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+</mapper>

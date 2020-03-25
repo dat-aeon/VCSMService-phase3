@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="mm.aeon.com.custommapper.purchaseinfo.PurchaseInfoCustomMapper">
+	
+	<resultMap id="purchaseInfoDetailResultMap" type="mm.aeon.com.dto.applicationinfo.PurchaseInfoDto" >
+			<id column="DA_PURCHASE_INFO_ID" jdbcType="INTEGER" property="daPurchaseInfoId" />
+			<result column="DA_APPLICATION_INFO_ID" jdbcType="INTEGER" property="daApplicationInfoId" />
+			<result column="AGREEMENT_NO" jdbcType="VARCHAR" property="agreementNo" />
+			<result column="PURCHASE_DATE" jdbcType="DATE" property="purchaseDate" />
+			<result column="OUTLET_ID" jdbcType="INTEGER" property="outletId" />
+			<result column="OUTLET_NAME" jdbcType="VARCHAR" property="outletName" />
+			<result column="INVOICE_NO" jdbcType="VARCHAR" property="invoiceNo" />
+			<result column="AGENT_ID" jdbcType="INTEGER" property="agentId" />
+			<result column="AGENT_NAME" jdbcType="VARCHAR" property="agentName" />
+			<result column="STATUS" jdbcType="INTEGER" property="status" />
+			<result column="SETTLEMENT_AMOUNT" jdbcType="DOUBLE" property="settlementAmount" />
+			<result column="DEL_FLAG" jdbcType="BOOLEAN" property="delFlag" />
+			<result column="PURCHASE_LOCATION" jdbcType="VARCHAR" property="purchaseLocation" />
+			<result column="FINANCE_AMOUNT" jdbcType="DOUBLE" property="financeAmount" />
+			<result column="FINANCE_TERM" jdbcType="INTEGER" property="financeTerm" />
+			<result column="COMPULSORY_AMOUNT" jdbcType="DOUBLE" property="compulsoryAmount" />
+			<collection resultMap="purchaseInfoAttachmentResultMap" property="purchaseInfoAttachmentDtoList" />
+			<collection resultMap="purchaseInfoProductResultMap" property="purchaseInfoProductDtoList" />
+	</resultMap>
+	
+	<resultMap id="purchaseInfoAttachmentResultMap" type="mm.aeon.com.dto.applicationinfo.PurchaseInfoAttachmentDto" >
+			<id column="DA_PURCHASE_INFO_ATTACHMENT_ID" jdbcType="INTEGER" property="daPurchaseInfoAttachmentId" />
+			<result column="DA_PURCHASE_INFO_ID" jdbcType="INTEGER" property="daPurchaseInfoId" />
+			<result column="FILE_PATH" jdbcType="VARCHAR" property="filePath" />
+			<result column="FILE_TYPE" jdbcType="INTEGER" property="fileType" />
+	</resultMap>
+	
+	<resultMap id="purchaseInfoProductResultMap" type="mm.aeon.com.dto.applicationinfo.PurchaseInfoProductDto" >
+			<id column="DA_PURCHASE_INFO_PRODUCT_ID" jdbcType="INTEGER" property="daPurchaseInfoProductId" />
+			<result column="DA_PURCHASE_INFO_ID" jdbcType="INTEGER" property="daPurchaseInfoId" />
+			<result column="DA_LOAN_TYPE_ID" jdbcType="INTEGER" property="daLoanTypeId" />
+			<result column="DA_PRODUCT_TYPE_ID" jdbcType="INTEGER" property="daProductTypeId" />
+			<result column="PRODUCT_DESCRIPTION" jdbcType="VARCHAR" property="productDescription" />
+			<result column="BRAND" jdbcType="VARCHAR" property="brand" />
+			<result column="MODEL" jdbcType="VARCHAR" property="model" />
+			<result column="PRICE" jdbcType="DOUBLE" property="price" />
+			<result column="CASH_DOWN_AMOUNT" jdbcType="DOUBLE" property="cashDownAmount" />
+	</resultMap>
+	
+	<select id="getPurchaseInfoDetail" parameterType="java.lang.Integer" resultMap="purchaseInfoDetailResultMap">
+		SELECT
+			DPI.DA_PURCHASE_INFO_ID,
+			DPI.DA_APPLICATION_INFO_ID,
+			DPI.AGREEMENT_NO,
+			DPI.PURCHASE_DATE,
+			DPI.OUTLET_ID,
+			DPI.OUTLET_NAME,
+			DPI.INVOICE_NO,
+			DPI.AGENT_ID,
+			DPI.AGENT_NAME,
+			DPI.STATUS,
+			DPI.SETTLEMENT_AMOUNT,
+			DPI.DEL_FLAG,
+			DPI.PURCHASE_LOCATION,
+			DAI.APPROVED_FINANCE_AMOUNT AS FINANCE_AMOUNT,
+			DAI.APPROVED_FINANCE_TERM AS FINANCE_TERM,
+			DCI.COMPULSORY_AMOUNT,
+			DPIA.DA_PURCHASE_INFO_ATTACHMENT_ID,
+			DPIA.DA_PURCHASE_INFO_ID,
+			DPIA.FILE_PATH,
+			DPIA.FILE_TYPE,
+			DPIP.DA_PURCHASE_INFO_PRODUCT_ID,
+			DPIP.DA_PURCHASE_INFO_ID,
+			DPIP.DA_LOAN_TYPE_ID,
+			DPIP.DA_PRODUCT_TYPE_ID,
+			DPIP.PRODUCT_DESCRIPTION,
+			DPIP.BRAND,
+			DPIP.MODEL,
+			DPIP.PRICE,
+			DPIP.CASH_DOWN_AMOUNT
+		FROM
+			da_purchase_info DPI
+		LEFT JOIN
+			da_application_info DAI
+		ON
+			DPI.DA_APPLICATION_INFO_ID = DAI.DA_APPLICATION_INFO_ID
+		LEFT JOIN
+			da_compulsory_info DCI
+		ON
+			DAI.DA_COMPULSORY_INFO_ID = DCI.DA_COMPULSORY_INFO_ID
+		LEFT JOIN
+			da_purchase_info_attachment DPIA
+		ON
+			DPI.DA_PURCHASE_INFO_ID = DPIA.DA_PURCHASE_INFO_ID
+		LEFT JOIN
+			da_purchase_info_product DPIP
+		ON
+			DPI.DA_PURCHASE_INFO_ID = DPIP. DA_PURCHASE_INFO_ID
+		LEFT JOIN
+			cust_agreement_list CAL
+		ON
+			DAI.APPLICATION_NO = CAL.APPLICATION_NO
+		WHERE
+			DPI.DA_APPLICATION_INFO_ID = #{daApplicationInfoId,jdbcType=INTEGER}
+		AND
+			DPI.DEL_FLAG = FALSE
+	</select>
+	
+	<insert id="insertPurchaseInfo"
+		parameterType="mm.aeon.com.zgen.entity.DaPurchaseInfo"
+		useGeneratedKeys="true" keyProperty="daPurchaseInfoId">
+		insert into da_purchase_info
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="daPurchaseInfoId != null">
+	        da_purchase_info_id,
+	      </if>
+	      <if test="daApplicationInfoId != null">
+	        da_application_info_id,
+	      </if>
+	      <if test="agreementNo != null">
+	        agreement_no,
+	      </if>
+	      <if test="purchaseDate != null">
+	        purchase_date,
+	      </if>
+	      <if test="outletId != null">
+	        outlet_id,
+	      </if>
+	      <if test="outletName != null">
+	        outlet_name,
+	      </if>
+	      <if test="invoiceNo != null">
+	        invoice_no,
+	      </if>
+	      <if test="createdTime != null">
+	        created_time,
+	      </if>
+	      <if test="createdBy != null">
+	        created_by,
+	      </if>
+	      <if test="updatedTime != null">
+	        updated_time,
+	      </if>
+	      <if test="updatedBy != null">
+	        updated_by,
+	      </if>
+	      <if test="delFlag != null">
+	        del_flag,
+	      </if>
+	      <if test="agentId != null">
+	        agent_id,
+	      </if>
+	      <if test="agentName != null">
+	        agent_name,
+	      </if>
+	      <if test="status != null">
+	        status,
+	      </if>
+	      <if test="settlementAmount != null">
+	        settlement_amount,
+	      </if>
+	      <if test="purchaseLocation != null">
+	        purchase_location,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="daPurchaseInfoId != null">
+	        #{daPurchaseInfoId,jdbcType=INTEGER},
+	      </if>
+	      <if test="daApplicationInfoId != null">
+	        #{daApplicationInfoId,jdbcType=INTEGER},
+	      </if>
+	      <if test="agreementNo != null">
+	        #{agreementNo,jdbcType=VARCHAR},
+	      </if>
+	      <if test="purchaseDate != null">
+	        #{purchaseDate,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="outletId != null">
+	        #{outletId,jdbcType=INTEGER},
+	      </if>
+	      <if test="outletName != null">
+	        #{outletName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="invoiceNo != null">
+	        #{invoiceNo,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createdTime != null">
+	        #{createdTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="createdBy != null">
+	        #{createdBy,jdbcType=VARCHAR},
+	      </if>
+	      <if test="updatedTime != null">
+	        #{updatedTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="updatedBy != null">
+	        #{updatedBy,jdbcType=VARCHAR},
+	      </if>
+	      <if test="delFlag != null">
+	        #{delFlag,jdbcType=BIT},
+	      </if>
+	      <if test="agentId != null">
+	        #{agentId,jdbcType=INTEGER},
+	      </if>
+	      <if test="agentName != null">
+	        #{agentName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null">
+	        #{status,jdbcType=INTEGER},
+	      </if>
+	      <if test="settlementAmount != null">
+	        #{settlementAmount,jdbcType=NUMERIC},
+	      </if>
+	      <if test="purchaseLocation != null">
+	        #{purchaseLocation,jdbcType=VARCHAR},
+	      </if>
+	    </trim>
+	</insert>
+	
+	<resultMap id="purchaseApplicationInfoResultMap" type="mm.aeon.com.dto.applicationinfo.PurchaseApplicationInfoDto" >
+		<id column="DA_APPLICATION_INFO_ID" jdbcType="INTEGER" property="daApplicationInfoId" />
+		<result column="CUSTOMER_ID" jdbcType="INTEGER" property="customerId" />
+		<result column="NAME" jdbcType="VARCHAR" property="name" />
+		<result column="CUSTOMER_NO" jdbcType="VARCHAR" property="customerNo" />
+		<result column="NRC_NO" jdbcType="VARCHAR" property="nrcNo" />
+		<result column="FINANCE_AMOUNT" jdbcType="DOUBLE" property="financeAmount" />
+		<result column="FINANCE_TERM" jdbcType="INTEGER" property="financeTerm" />
+		<result column="DA_LOAN_TYPE_ID" jdbcType="INTEGER" property="daLoanTypeId" />
+		<result column="STATUS" jdbcType="INTEGER" property="applicationStatus" />
+		<association property="interestInfoDto" javaType="mm.aeon.com.dto.applicationinfo.InterestInfoDto">
+			<id column="DA_INTEREST_INFO_ID" jdbcType="INTEGER" property="daInterestInfoId" />
+			<result column="INTEREST_RATE" jdbcType="DOUBLE" property="interestRate" />
+		</association>
+		<association property="compulsoryInfoDto" javaType="mm.aeon.com.dto.applicationinfo.CompulsoryInfoDto">
+			<id column="DA_COMPULSORY_INFO_ID" jdbcType="INTEGER" property="daCompulsoryInfoId" />
+			<result column="COMPULSORY_AMOUNT" jdbcType="DOUBLE" property="compulsoryAmount" />
+		</association>
+	</resultMap>
+	
+	<select id="getPurchaseApplicationInfoDto" parameterType="java.lang.Integer" resultMap="purchaseApplicationInfoResultMap">
+		SELECT
+			DAI.DA_APPLICATION_INFO_ID,
+			CI.CUSTOMER_ID,
+			DAI.NAME,
+			CI.CUSTOMER_NO,
+			DAI.NRC_NO,
+			DAI.APPROVED_FINANCE_AMOUNT AS FINANCE_AMOUNT,
+			DAI.APPROVED_FINANCE_TERM AS FINANCE_TERM,
+			DAI.DA_LOAN_TYPE_ID,
+			DAI.STATUS,
+			DII.DA_INTEREST_INFO_ID,
+			DII.INTEREST_RATE,
+			DCI.DA_COMPULSORY_INFO_ID,
+			DCI.COMPULSORY_AMOUNT
+		FROM
+			da_application_info DAI
+		LEFT JOIN
+			customer_info CI
+		ON
+			DAI.CUSTOMER_ID = CI.CUSTOMER_ID
+		LEFT JOIN
+			da_interest_info DII
+		ON
+			DAI.DA_INTEREST_INFO_ID = DII.DA_INTEREST_INFO_ID
+		LEFT JOIN
+			da_compulsory_info DCI
+		ON
+			DAI.DA_COMPULSORY_INFO_ID = DCI.DA_COMPULSORY_INFO_ID
+		LEFT JOIN
+			cust_agreement_list CAL
+		ON
+			DAI.APPLICATION_NO = CAL.APPLICATION_NO
+		WHERE
+			DAI.DA_APPLICATION_INFO_ID = #{daApplicationInfoId,jdbcType=INTEGER}
+	</select>
+	
+	<resultMap id="checkingAttachmentResultMap" type="mm.aeon.com.dto.applicationinfo.CheckingAttachmentDto" >
+		<id column="DA_CHECKING_ATTACHMENT_ID" jdbcType="INTEGER" property="daCheckingAttachmentId" />
+		<result column="DA_PURCHASE_INFO_ID" jdbcType="INTEGER" property="daPurchaseInfoId" />
+		<result column="AGREEMENT_NO" jdbcType="VARCHAR" property="agreementNo" />
+		<result column="OLD_FILE_PATH" jdbcType="VARCHAR" property="oldFilePath" />
+		<result column="NEW_FILE_PATH" jdbcType="VARCHAR" property="newFilePath" />
+		<result column="FILE_TYPE" jdbcType="INTEGER" property="fileType" />
+		<result column="STATUS" jdbcType="INTEGER" property="status" />
+		<result column="REJECT_COMMENT" jdbcType="VARCHAR" property="rejectComment" />
+	</resultMap>
+	
+	<select id="getCheckingAttachmentDtoWithPurchaseIdAndFileType" parameterType="map" resultMap="checkingAttachmentResultMap">
+		SELECT
+			DCA.DA_CHECKING_ATTACHMENT_ID,
+			DCA.DA_PURCHASE_INFO_ID,
+			DCA.AGREEMENT_NO,
+			DCA.OLD_FILE_PATH,
+			DCA.NEW_FILE_PATH,
+			DCA.FILE_TYPE,
+			DCA.STATUS,
+			DCA.REJECT_COMMENT
+		FROM
+			da_checking_attachment DCA
+		WHERE
+			DCA.DA_PURCHASE_INFO_ID = #{daPurchaseInfoId,jdbcType=INTEGER}
+		AND
+			DCA.FILE_TYPE = #{fileType,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getCheckingAttachmentList" parameterType="java.lang.Integer" resultMap="checkingAttachmentResultMap">
+		SELECT
+			DCA.DA_CHECKING_ATTACHMENT_ID,
+			DCA.DA_PURCHASE_INFO_ID,
+			DCA.AGREEMENT_NO,
+			DCA.OLD_FILE_PATH,
+			DCA.NEW_FILE_PATH,
+			DCA.FILE_TYPE,
+			DCA.STATUS,
+			DCA.REJECT_COMMENT
+		FROM
+			da_checking_attachment DCA
+		WHERE
+			DCA.DA_PURCHASE_INFO_ID = #{daPurchaseInfoId,jdbcType=INTEGER}
+	</select>
+	
+	<resultMap id="purchaseInquriesResultMap" type="mm.aeon.com.dto.applicationinfo.PurchaseInquriesResDto" >
+		<id column="DA_PURCHASE_INFO_ID" jdbcType="INTEGER" property="daPurchaseInfoId" />
+		<result column="DA_APPLICATION_INFO_ID" jdbcType="INTEGER" property="daApplicationInfoId" />
+		<result column="APPLICATION_NO" jdbcType="VARCHAR" property="applicationNo" />
+		<result column="OUTLET_NAME" jdbcType="VARCHAR" property="outletName" />
+		<result column="AGENT_NAME" jdbcType="VARCHAR" property="agentName" />
+		<result column="AGREEMENT_NO" jdbcType="VARCHAR" property="agreementNo" />
+		<result column="PURCHASE_DATE" jdbcType="DATE" property="purchaseDate" />
+		<result column="FINANCE_AMOUNT" jdbcType="DOUBLE" property="financeAmount" />
+		<result column="FINANCE_TERM" jdbcType="INTEGER" property="financeTerm" />
+		<result column="CREATED_TIME" jdbcType="DATE" property="settlementDate" />
+		<result column="COMPULSORY_AMOUNT" jdbcType="DOUBLE" property="compulsoryAmount" />
+		<result column="STATUS" jdbcType="INTEGER" property="applicationStatus" />
+	</resultMap>
+	
+	<select id="getPurchaseInquriesList"  parameterType="mm.aeon.com.dto.applicationinfo.PurchaseInquriesSearchCriteriaDto" resultMap="purchaseInquriesResultMap">
+		SELECT DISTINCT
+			DPI.DA_PURCHASE_INFO_ID,
+			DAI.DA_APPLICATION_INFO_ID,
+			DAI.APPLICATION_NO,
+			DPI.OUTLET_NAME,
+			DPI.AGENT_NAME,
+			DPI.AGREEMENT_NO,
+			DPI.PURCHASE_DATE,
+			DAI.APPROVED_FINANCE_AMOUNT AS FINANCE_AMOUNT,
+			DAI.APPROVED_FINANCE_TERM AS FINANCE_TERM,
+			DCI.COMPULSORY_AMOUNT,
+			DAI.STATUS
+		FROM
+			DA_PURCHASE_INFO AS DPI
+		LEFT JOIN
+			DA_APPLICATION_INFO AS DAI
+		ON
+			DPI.DA_APPLICATION_INFO_ID=DAI.DA_APPLICATION_INFO_ID
+		LEFT JOIN
+			DA_APPLICATION_INFO_HISTORY AS DAIH
+		ON
+			DAI.DA_APPLICATION_INFO_ID=DAIH.DA_APPLICATION_INFO_ID
+		LEFT JOIN
+			DA_COMPULSORY_INFO AS DCI
+		ON
+			DAI.DA_COMPULSORY_INFO_ID=DCI.DA_COMPULSORY_INFO_ID
+		LEFT JOIN
+			cust_agreement_list CAL
+		ON
+			DAI.APPLICATION_NO = CAL.APPLICATION_NO
+		WHERE
+			DPI.DEL_FLAG=FALSE
+		AND
+			DPI.STATUS=5
+		AND
+			DAI.DEL_FLAG=FALSE
+		AND
+			DPI.AGENT_ID = #{agentId,jdbcType=INTEGER}
+		<if test="settlementDate!=null">
+			AND to_char(DPI.PURCHASE_DATE, 'yyyyMMdd') = #{settlementDateStr,jdbcType=VARCHAR}
+		</if>
+		ORDER BY
+			DPI.PURCHASE_DATE DESC
+	</select>
+	
+	<resultMap id="purchaseAttachmentEditInfoResultMap" type="mm.aeon.com.dto.applicationinfo.PurchaseAttachmentEditInfoResDto" >
+		<id column="DA_PURCHASE_INFO_ATTACHMENT_ID" jdbcType="INTEGER" property="daPurchaseInfoAttachmentId" />
+		<result column="FILE_PATH" jdbcType="VARCHAR" property="filePath" />
+		<result column="FILE_TYPE" jdbcType="INTEGER" property="fileType" />
+	</resultMap>
+	
+	<select id="getPurchaseAttachmentEditInfoList"  parameterType="mm.aeon.com.dto.applicationinfo.PurchaseAttachmentEditInfoReqDto" resultMap="purchaseAttachmentEditInfoResultMap">
+		SELECT
+			DPIA.DA_PURCHASE_INFO_ATTACHMENT_ID,
+			DPIA.FILE_PATH,
+			DPIA.FILE_TYPE
+		FROM
+			DA_PURCHASE_INFO_ATTACHMENT DPIA
+		WHERE
+			DPIA.DA_PURCHASE_INFO_ID = #{daPurchaseInfoId,jdbcType=INTEGER}
+		AND
+			DPIA.EDIT_FLAG = TRUE
+	</select>
+	
+	<resultMap id="agentApplicationStatusInfoResultMap" type="mm.aeon.com.dto.applicationinfo.AgentApplicationStatusInfoResDto" >
+		<id column="DA_APPLICATION_INFO_ID" jdbcType="INTEGER" property="daApplicationInfoId" />
+		<result column="APPLICATION_NO" jdbcType="VARCHAR" property="applicationNo" />
+		<result column="NAME" jdbcType="VARCHAR" property="customerName" />
+		<result column="NRC_NO" jdbcType="VARCHAR" property="nrcNo" />
+		<result column="MOBILE_NO" jdbcType="VARCHAR" property="phoneNo" />
+		<result column="FINANCE_AMOUNT" jdbcType="DOUBLE" property="financeAmount" />
+		<result column="FINANCE_TERM" jdbcType="INTEGER" property="financeTerm" />
+		<result column="APPROVED_FINANCE_AMOUNT" jdbcType="DOUBLE" property="approvedFinanceAmount" />
+		<result column="APPROVED_FINANCE_TERM" jdbcType="INTEGER" property="approvedFinanceTerm" />
+		<result column="STATUS" jdbcType="INTEGER" property="status" />
+	</resultMap>
+	
+	<select id="getAgentApplicationStatusInfo"  parameterType="mm.aeon.com.dto.applicationinfo.AgentApplicationStatusInfoReqDto" resultMap="agentApplicationStatusInfoResultMap">
+		SELECT
+			DAI.DA_APPLICATION_INFO_ID,
+			DAI.APPLICATION_NO,
+			DAI.NAME,
+			DAI.NRC_NO,
+			DAI.MOBILE_NO,
+			DAI.FINANCE_AMOUNT,
+			DAI.FINANCE_TERM,
+			DAI.APPROVED_FINANCE_AMOUNT,
+			DAI.APPROVED_FINANCE_TERM,
+			DAI.STATUS	
+		FROM
+			da_application_info DAI
+		LEFT JOIN
+			cust_agreement_list CAL
+		ON
+			DAI.APPLICATION_NO = CAL.APPLICATION_NO
+		WHERE
+			DAI.APPLICATION_NO = #{applicationNo,jdbcType=VARCHAR}
+	</select>
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mm.aeon.com.custommapper.mobileversionconfig.MobileVersionConfigCustomMapper">
+
+	<resultMap id="mobileVersionConfigResultMap" type="mm.aeon.com.dto.mobileversionconfig.MobileVersionConfigDto">
+		<id column="ID" jdbcType="INTEGER" property="id" />
+		<result column="VERSION_NO" jdbcType="VARCHAR" property="versionNo" />
+		<result column="FORCE_UPD_FLAG" jdbcType="SMALLINT" property="forceUpdFlag" />
+		<result column="VERSION_UPDATE_INFO" jdbcType="VARCHAR" property="versionUpdateInfo" />
+	</resultMap>
+
+	<select id="getMobileVersionConfig" parameterType="map" resultMap="mobileVersionConfigResultMap">
+		SELECT
+			MVC.ID,
+			MVC.VERSION_NO,
+			MVC.FORCE_UPD_FLAG,
+			MVC.VERSION_UPDATE_INFO
+		FROM
+			mobile_ver_config MVC
+		WHERE
+			MVC.VERSION_NO = #{versionNo,jdbcType=VARCHAR}
+		<if test="osType != null">
+			AND MVC.OS_TYPE = #{osType,jdbcType=INTEGER}
+		</if>
+		
+	</select>
+
+</mapper>

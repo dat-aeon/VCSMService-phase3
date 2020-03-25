@@ -1,0 +1,43 @@
+#DataSource Configuration
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://10.1.9.69:5432/vcs?useUnicode=true&characterEncoding=utf8
+    username: vcs
+    password: vcs
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+server:
+  servlet:
+    contextPath: /api
+properties:
+  purchaseImageReuploadBaseFilePath: /PurchaseImageReupload
+  imageBaseFilePath: /PhotoImage
+  couponImageFolder: /CouponImage/
+  profileImageFolder: /ProfileImage/
+  newsImageFolder: /NewsImage/
+  promotionImageFolder: /PromotionImage/
+  messageImageFolder: /MessageImage/
+  freeMessageImageFolder: /FreeMessageImage/
+  plMessageImageFolder: /PlMessageImage/
+  howToUseVideoFolder: /HowToUseVideo/
+  outletInfoListApiLink: http://10.1.9.70:83/assm2/outlet-info/outlet-info-list
+  outletImageApiLink: http://10.1.9.70:83/assm2/outlet-image-files/
+  outletLimitMetre: 1000
+  digitalApplicationImageFolder: DigitalApplicationImage
+  purchaseImageFolder: PurchaseImage
+  checkingImageFolder: CheckingImage
+  serverAddress: 10.1.9.69
+  serverPort: 22
+  serverUsername: root
+  serverPassword: 123@dat
+  otpMainUrl: http://172.16.112.55/aeonsmsgatewayapi/sendsmsto?
+  otpPhoneUrl: phone=95
+  otpUsernameUrl: '&username=aeon'
+  otpPasswordUrl: '&password=ae1940on122'
+  otpUnicodeUrl: '&unicode=true'
+  otpMessageUrl: '&message='
+  otpProjectIdUrl: '&prjId=VCS'
+  otpProductionFlag: false

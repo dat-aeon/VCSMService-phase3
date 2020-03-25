@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mm.aeon.com.custommapper.appusageinfo.AppUsageInfoCustomMapper">
+
+	<resultMap id="appUsageInfoResultMap" type="mm.aeon.com.dto.appusageinfo.AppUsageInfoDto">
+		<id column="APP_USAGE_ID" jdbcType="INTEGER" property="appUsageId" />
+		<result column="CUSTOMER_ID" jdbcType="INTEGER" property="customerId" />
+		<result column="REGISTRATION_DATE_TIME" jdbcType="TIMESTAMP" property="registrationDateTime" />
+		<result column="PHONE_MODEL" jdbcType="VARCHAR" property="phoneModel" />
+		<result column="MANUFACTURE" jdbcType="VARCHAR" property="manufacture" />
+		<result column="SDK" jdbcType="VARCHAR" property="sdk" />
+		<result column="OS_TYPE" jdbcType="VARCHAR" property="osType" />
+		<result column="OS_VERSION" jdbcType="VARCHAR" property="osVersion" />
+		<result column="RESOLUTION" jdbcType="VARCHAR" property="resolution" />
+		<result column="INSTRUCTION_SET" jdbcType="VARCHAR" property="instructionSet" />
+		<result column="CPU_ARCHITECTURE" jdbcType="VARCHAR" property="cpuArchitecture" />
+	</resultMap>
+	
+	<resultMap id="lastAppUsageDetailResultMap" type="mm.aeon.com.dto.appusageinfo.AppUsageDetailDto">
+		<id column="APP_USAGE_DETAIL_ID" jdbcType="INTEGER" property="appUsageDetailId" />
+		<result column="APP_USAGE_ID" jdbcType="INTEGER" property="appUsageId" />
+		<result column="START_USAGE_DATE_TIME" jdbcType="TIMESTAMP" property="startUsageDateTime" />
+		<result column="END_USAGE_DATE_TIME" jdbcType="TIMESTAMP" property="endUsageDateTime" />
+	</resultMap>
+  
+  <select id="getAppUsageInfoWithCustomerId" parameterType="java.lang.Integer" resultMap="appUsageInfoResultMap">
+		SELECT
+			AUI.APP_USAGE_ID,
+			AUI.CUSTOMER_ID,
+			AUI.REGISTRATION_DATE_TIME,
+			AUI.PHONE_MODEL,
+			AUI.MANUFACTURE,
+			AUI.SDK,
+			AUI.OS_TYPE,
+			AUI.OS_VERSION,
+			AUI.RESOLUTION,
+			AUI.INSTRUCTION_SET,
+			AUI.CPU_ARCHITECTURE
+		FROM
+			app_usage_info AUI
+		WHERE
+			AUI.DEL_FLAG = 0
+		AND
+			AUI.CUSTOMER_ID = #{customerId,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getLastAppUsageDetailWithCustomerId" parameterType="java.lang.Integer" resultMap="lastAppUsageDetailResultMap">
+		SELECT
+			AUD.APP_USAGE_DETAIL_ID,
+			AUD.APP_USAGE_ID,
+			AUD.START_USAGE_DATE_TIME,
+			AUD.END_USAGE_DATE_TIME
+		FROM
+			app_usage_info AUI
+		LEFT JOIN
+			app_usage_detail AUD
+		ON
+			AUI.APP_USAGE_ID = AUD.APP_USAGE_ID
+		WHERE
+			AUI.DEL_FLAG = 0
+		AND
+			AUI.CUSTOMER_ID = #{customerId,jdbcType=INTEGER}
+		ORDER BY
+			AUD.START_USAGE_DATE_TIME DESC
+		LIMIT
+			1
+	</select>
+	
+	<insert id="insertAppUsageInfo" parameterType="mm.aeon.com.zgen.entity.AppUsageInfo" useGeneratedKeys="true" keyProperty="appUsageId">
+    insert into app_usage_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="appUsageId != null">
+        app_usage_id,
+      </if>
+      <if test="customerId != null">
+        customer_id,
+      </if>
+      <if test="registrationDateTime != null">
+        registration_date_time,
+      </if>
+      <if test="phoneModel != null">
+        phone_model,
+      </if>
+      <if test="manufacture != null">
+        manufacture,
+      </if>
+      <if test="sdk != null">
+        sdk,
+      </if>
+      <if test="osType != null">
+        os_type,
+      </if>
+      <if test="osVersion != null">
+        os_version,
+      </if>
+      <if test="resolution != null">
+        resolution,
+      </if>
+      <if test="instructionSet != null">
+        instruction_set,
+      </if>
+      <if test="cpuArchitecture != null">
+        cpu_architecture,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="updatedBy != null">
+        updated_by,
+      </if>
+      <if test="createdTime != null">
+        created_time,
+      </if>
+      <if test="updatedTime != null">
+        updated_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="appUsageId != null">
+        #{appUsageId,jdbcType=INTEGER},
+      </if>
+      <if test="customerId != null">
+        #{customerId,jdbcType=INTEGER},
+      </if>
+      <if test="registrationDateTime != null">
+        #{registrationDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="phoneModel != null">
+        #{phoneModel,jdbcType=VARCHAR},
+      </if>
+      <if test="manufacture != null">
+        #{manufacture,jdbcType=VARCHAR},
+      </if>
+      <if test="sdk != null">
+        #{sdk,jdbcType=VARCHAR},
+      </if>
+      <if test="osType != null">
+        #{osType,jdbcType=VARCHAR},
+      </if>
+      <if test="osVersion != null">
+        #{osVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="resolution != null">
+        #{resolution,jdbcType=VARCHAR},
+      </if>
+      <if test="instructionSet != null">
+        #{instructionSet,jdbcType=VARCHAR},
+      </if>
+      <if test="cpuArchitecture != null">
+        #{cpuArchitecture,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=SMALLINT},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedBy != null">
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null">
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+</mapper>

@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mm.aeon.com.custommapper.information.InformationCustomMapper">
+
+	<resultMap id="itemLabelEngMap" type="mm.aeon.com.dto.information.ItemLabelResDto">
+        <result column="ITEM_LABEL_CODE" jdbcType="VARCHAR" property="itemLabelCode"/>
+        <result column="ITEM_LABEL_ENG" jdbcType="VARCHAR" property="itemLabelEng"/>
+	</resultMap>
+	
+	<select id="getItemLabelEngList" resultMap="itemLabelEngMap">
+		SELECT
+			DIL.ITEM_LABEL_CODE,
+			DIL.ITEM_LABEL_ENG
+		FROM
+			da_item_label DIL
+		WHERE
+			DIL.DEL_FLAG = FALSE
+		ORDER BY
+			DIL.ITEM_LABEL_CODE
+	</select>
+	
+	<resultMap id="itemLabelMymMap" type="mm.aeon.com.dto.information.ItemLabelResDto">
+        <result column="ITEM_LABEL_CODE" jdbcType="VARCHAR" property="itemLabelCode"/>
+        <result column="ITEM_LABEL_MYM" jdbcType="VARCHAR" property="itemLabelMym"/>
+	</resultMap>
+	
+	<select id="getItemLabelMymList" resultMap="itemLabelMymMap">
+		SELECT
+			DIL.ITEM_LABEL_CODE,
+			DIL.ITEM_LABEL_MYM
+		FROM
+			da_item_label DIL
+		WHERE
+			DIL.DEL_FLAG = FALSE
+		ORDER BY
+			DIL.ITEM_LABEL_CODE
+	</select>
+	
+	<resultMap id="loanTypeMap" type="mm.aeon.com.dto.information.LoanTypeResDto">
+        <id column="DA_LOAN_TYPE_ID" jdbcType="INTEGER" property="loanTypeId"/>
+        <result column="NAME" jdbcType="VARCHAR" property="name"/>
+	</resultMap>
+	
+	<select id="getLoanTypeList" resultMap="loanTypeMap">
+		SELECT
+			DLT.DA_LOAN_TYPE_ID,
+			DLT.NAME
+		FROM
+			da_loan_type DLT
+		WHERE
+			DLT.DEL_FLAG = FALSE
+		ORDER BY
+			DLT.NAME
+	</select>
+	
+	<resultMap id="applicationTypeMap" type="mm.aeon.com.dto.information.ApplicationTypeResDto">
+        <id column="DA_APPLICATION_TYPE_ID" jdbcType="INTEGER" property="applicationTypeId"/>
+        <result column="NAME" jdbcType="VARCHAR" property="name"/>
+	</resultMap>
+	
+	<select id="getApplicationTypeList" resultMap="applicationTypeMap">
+		SELECT
+			DAT.DA_APPLICATION_TYPE_ID,
+			DAT.NAME
+		FROM
+			da_application_type DAT
+		WHERE
+			DAT.DEL_FLAG = FALSE
+		ORDER BY
+			DAT.NAME
+	</select>
+	
+	<resultMap id="productTypeMap" type="mm.aeon.com.dto.information.ProductTypeResDto">
+        <id column="DA_PRODUCT_TYPE_ID" jdbcType="INTEGER" property="productTypeId"/>
+        <result column="NAME" jdbcType="VARCHAR" property="name"/>
+	</resultMap>
+	
+	<select id="getProductTypeList" resultMap="productTypeMap">
+		SELECT
+			DPT.DA_PRODUCT_TYPE_ID,
+			DPT.NAME
+		FROM
+			da_product_type DPT
+		WHERE
+			DPT.DEL_FLAG = FALSE
+		ORDER BY
+			DPT.NAME
+	</select>
+	
+	<resultMap id="termsAndConditionsMap" type="mm.aeon.com.dto.information.TermsAndConditionsResDto">
+        <result column="DESCRIPTION_ENG" jdbcType="VARCHAR" property="descriptionEng"/>
+        <result column="DESCRIPTION_MYN" jdbcType="VARCHAR" property="descriptionMyn"/>
+	</resultMap>
+	
+	<select id="getTermsAndConditions" resultMap="termsAndConditionsMap">
+		SELECT
+			TAC.DESCRIPTION_ENG,
+			TAC.DESCRIPTION_MYN
+		FROM
+			terms_and_conditions TAC
+		WHERE
+			TAC.DEL_FLAG = 0
+	</select>
+	
+		<resultMap id="companyInfoResultMap" type="mm.aeon.com.dto.information.CompanyInfoResDto">
+		<id column="LOGIN_USER_ID" jdbcType="INTEGER" property="companyInfoId" />
+		<result column="ADDRESS_ENG" jdbcType="VARCHAR" property="addressEn" />
+		<result column="ADDRESS_MYAN" jdbcType="VARCHAR" property="addressMm" />
+		<result column="HOTLINE_PHONE" jdbcType="VARCHAR" property="hotlinePhone" />
+		<result column="WEB_ADDRESS" jdbcType="VARCHAR" property="webAddress" />
+		<result column="SOCIAL_MEDIA_ADDRESS" jdbcType="VARCHAR" property="socialMediaAddress" />
+		<result column="ABOUT_COMPANY_ENG" jdbcType="VARCHAR" property="aboutCompanyEn" />
+		<result column="ABOUT_COMPANY_MYAN" jdbcType="VARCHAR" property="aboutCompanyMm" />
+	</resultMap>
+
+	<select id="getCompanyInfo" resultMap="companyInfoResultMap">
+		SELECT
+			CI.COMPANY_INFO_ID,
+			CI.ADDRESS_ENG,
+			CI.ADDRESS_MYAN,
+			CI.HOTLINE_PHONE,
+			CI.WEB_ADDRESS,
+			CI.SOCIAL_MEDIA_ADDRESS,
+			CI.ABOUT_COMPANY_ENG,
+			CI.ABOUT_COMPANY_MYAN
+		FROM
+			company_info CI
+	</select>
+	
+	<resultMap id="faqInfoResultMap" type="mm.aeon.com.dto.information.FAQInfo">
+		<id column="CATEGORY_ID" jdbcType="INTEGER" property="faqCategoryId" />
+		<result column="CATEGORY" jdbcType="VARCHAR" property="faqCategory" />
+		<result column="CATEGORY" jdbcType="VARCHAR" property="faqCategoryEng" />
+		<result column="CATEGORY_MYN" jdbcType="VARCHAR" property="faqCategoryMyn" />
+		<collection property="faqInfoResDtoList" column="FAQ_ID"
+			notNullColumn="FAQ_ID" javaType="ArrayList"
+			ofType="mm.aeon.com.dto.information.FAQInfoResDto" resultMap="faqResultMap" />
+	</resultMap>
+	
+	<resultMap id="faqResultMap" type="mm.aeon.com.dto.information.FAQInfoResDto">
+		<id column="FAQ_ID" jdbcType="INTEGER" property="faqId" />
+		<result column="QUESTION_MYAN" jdbcType="VARCHAR" property="questionMM" />
+		<result column="QUESTION_ENG" jdbcType="VARCHAR" property="questionEN" />
+		<result column="ANSWER_MYAN" jdbcType="VARCHAR" property="answerMM" />
+		<result column="ANSWER_ENG" jdbcType="VARCHAR" property="answerEN" />
+		<result column="CATEGORY_ID" jdbcType="INTEGER" property="categoryId" />
+	</resultMap>
+	
+	<select id="getFAQInfoList" resultMap="faqInfoResultMap">
+		SELECT
+			FC.CATEGORY_ID,
+			FC.CATEGORY,
+			FC.CATEGORY_MYN,
+			FI.FAQ_ID,
+			FI.QUESTION_MYAN,
+			FI.QUESTION_ENG,
+			FI.ANSWER_MYAN,
+			FI.ANSWER_ENG,
+			FI.CATEGORY_ID
+		FROM
+			faq_category FC
+		LEFT JOIN
+			FAQ_INFO FI
+		ON
+			FC.CATEGORY_ID = FI.CATEGORY_ID
+		WHERE
+			FC.DEL_FLAG = 0
+		AND
+			FI.DEL_FLAG = 0
+	</select>
+	
+	<resultMap id="townshipCodeResultMap" type="mm.aeon.com.dto.information.TownshipCodeResDto">
+		<id column="STATE_ID" jdbcType="SMALLINT" property="stateId" />
+		<collection property="townshipCodeList" ofType="String">
+    		<result column="TOWNSHIP_CODE"/>
+		</collection>
+	</resultMap>
+	
+	<select id="getTownshipCodeList" resultMap="townshipCodeResultMap">
+		SELECT
+			SD.STATE_ID,
+			TI.TOWNSHIP_CODE
+		FROM
+			state_division_info SD
+		LEFT JOIN
+			township_info TI
+		ON
+			SD.STATE_ID = TI.STATE_ID
+		WHERE
+			SD.ISVALID = 1
+		AND
+			TI.ISVALID = 1
+		ORDER BY
+			SD.STATE_ID, TI.TOWNSHIP_CODE
+	</select>
+	
+	<resultMap id="cityTownshipResultMap" type="mm.aeon.com.dto.information.CityInfoDto">
+		<id column="CITY_ID" jdbcType="INTEGER" property="cityId" />
+		<id column="NAME" jdbcType="VARCHAR" property="name" />
+		
+		<collection resultMap="townshipInfoResultMap" property="townshipInfoList" />
+	</resultMap>
+	
+	<resultMap id="townshipInfoResultMap" type="mm.aeon.com.dto.information.TownshipInfoDto">
+		<id column="TOWNSHIP_ID" jdbcType="INTEGER" property="townshipId" />
+		<result column="TOWNSHIP_NAME" jdbcType="VARCHAR" property="name" />
+	</resultMap>
+	
+	<select id="getCityTownshipInfoList" resultMap="cityTownshipResultMap">
+		SELECT
+			DCI.CITY_ID,
+			DCI.NAME,
+			DTI.TOWNSHIP_ID,
+			DTI.NAME as TOWNSHIP_NAME
+		FROM
+			da_city_info DCI
+		LEFT JOIN
+			da_township_info DTI
+		ON
+			DCI.CITY_ID = DTI.CITY_ID
+		WHERE
+			DCI.DEL_FLAG = FALSE
+		AND
+			DTI.DEL_FLAG = FALSE
+		ORDER BY
+			DCI.NAME, DTI.NAME
+	</select>
+	
+	<resultMap id="chatAutoReplyMessageResultMap" type="mm.aeon.com.dto.information.ChatAutoReplyMessageResDto">
+		<result column="CHAT_AUTO_REPLY_MESSAGE" jdbcType="VARCHAR" property="message" />
+	</resultMap>
+	
+	<select id="getChatAutoReplyMessage" resultMap="chatAutoReplyMessageResultMap">
+		SELECT
+			CI.CHAT_AUTO_REPLY_MESSAGE
+		FROM
+			company_info CI
+	</select>
+
+</mapper>

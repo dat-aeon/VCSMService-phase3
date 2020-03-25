@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mm.aeon.com.custommapper.SecurityMapper">
+	<resultMap id="UserDetailsMap" type="mm.aeon.com.dto.LoginUserDto">
+		<id column="LOGIN_USER_ID" jdbcType="INTEGER" property="loginUserId"  />
+		<result column="PHONE_NO" jdbcType="VARCHAR" property="username"  />
+		<result column="PASSWORD" jdbcType="VARCHAR" property="password"  />
+		<result column="NAME" jdbcType="VARCHAR" property="name"  />
+		<result column="ROLE_ID" jdbcType="INTEGER" property="roleId"  />
+		<collection property="roles" ofType="String" select="getRoleList" column="ROLE_ID" />
+	</resultMap>
+	
+	<select id="findLoginUserByPhoneNo" parameterType="map" resultMap="UserDetailsMap">
+		SELECT
+			CI.CUSTOMER_ID AS LOGIN_USER_ID,
+			CI.PHONE_NO,
+			CI.NAME,
+			PI.PASSWORD,
+			PI.USER_TYPE_ID as ROLE_ID
+		FROM
+			customer_info CI
+		LEFT JOIN
+			password_info PI
+		ON
+			CI.CUSTOMER_ID = PI.USER_ID
+		WHERE
+			PI.USER_TYPE_ID = 3
+		AND
+			CI.PHONE_NO = #{phoneNo,jdbcType=VARCHAR}
+		AND
+			CI.DEL_FLAG = 0
+	</select>
+	
+	<select id="getRoleList" parameterType="Integer" resultType="String">
+		SELECT 
+			UT.USR_TYPE AS ROLE
+		FROM 
+			user_type UT
+		JOIN 
+			PASSWORD_INFO PI 
+		ON 
+			UT.USER_TYPE_ID = PI.USER_TYPE_ID 
+		WHERE 
+			PI.USER_TYPE_ID = #{customerId,jdbcType=INTEGER}
+	</select>	
+</mapper>

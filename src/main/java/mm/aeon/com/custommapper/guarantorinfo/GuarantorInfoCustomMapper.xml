@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="mm.aeon.com.custommapper.guarantorinfo.GuarantorInfoCustomMapper">
+
+	<insert id="insertGuarantorInfo"
+		parameterType="mm.aeon.com.zgen.entity.DaGuarantorInfo"
+		useGeneratedKeys="true" keyProperty="daGuarantorInfoId">
+		insert into da_guarantor_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="daGuarantorInfoId != null">
+				da_guarantor_info_id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="dob != null">
+				dob,
+			</if>
+			<if test="nrcNo != null">
+				nrc_no,
+			</if>
+			<if test="nationality != null">
+				nationality,
+			</if>
+			<if test="nationalityOther != null">
+				nationality_other,
+			</if>
+			<if test="mobileNo != null">
+				mobile_no,
+			</if>
+			<if test="residentTelNo != null">
+				resident_tel_no,
+			</if>
+			<if test="relationship != null">
+				relationship,
+			</if>
+			<if test="relationshipOther != null">
+				relationship_other,
+			</if>
+			<if test="currentAddress != null">
+				current_address,
+			</if>
+			<if test="typeOfResidence != null">
+				type_of_residence,
+			</if>
+			<if test="typeOfResidenceOther != null">
+				type_of_residence_other,
+			</if>
+			<if test="livingWith != null">
+				living_with,
+			</if>
+			<if test="livingWithOther != null">
+				living_with_other,
+			</if>
+			<if test="gender != null">
+				gender,
+			</if>
+			<if test="maritalStatus != null">
+				marital_status,
+			</if>
+			<if test="yearOfStayYear != null">
+				year_of_stay_year,
+			</if>
+			<if test="yearOfStayMonth != null">
+				year_of_stay_month,
+			</if>
+			<if test="companyName != null">
+				company_name,
+			</if>
+			<if test="companyTelNo != null">
+				company_tel_no,
+			</if>
+			<if test="companyAddress != null">
+				company_address,
+			</if>
+			<if test="department != null">
+				department,
+			</if>
+			<if test="position != null">
+				position,
+			</if>
+			<if test="yearOfServiceYear != null">
+				year_of_service_year,
+			</if>
+			<if test="yearOfServiceMonth != null">
+				year_of_service_month,
+			</if>
+			<if test="monthlyBasicIncome != null">
+				monthly_basic_income,
+			</if>
+			<if test="totalIncome != null">
+				total_income,
+			</if>
+			<if test="createdTime != null">
+				created_time,
+			</if>
+			<if test="createdBy != null">
+				created_by,
+			</if>
+			<if test="updatedTime != null">
+				updated_time,
+			</if>
+			<if test="updatedBy != null">
+				updated_by,
+			</if>
+			<if test="delFlag != null">
+				del_flag,
+			</if>
+			<if test="daApplicationInfoId != null">
+				da_application_info_id,
+			</if>
+			<if test="currentAddressBuildingNo != null">
+				current_address_building_no,
+			</if>
+			<if test="currentAddressRoomNo != null">
+				current_address_room_no,
+			</if>
+			<if test="currentAddressFloor != null">
+				current_address_floor,
+			</if>
+			<if test="currentAddressStreet != null">
+				current_address_street,
+			</if>
+			<if test="currentAddressQtr != null">
+				current_address_qtr,
+			</if>
+			<if test="currentAddressTownship != null">
+				current_address_township,
+			</if>
+			<if test="currentAddressCity != null">
+				current_address_city,
+			</if>
+			<if test="companyAddressBuildingNo != null">
+				company_address_building_no,
+			</if>
+			<if test="companyAddressRoomNo != null">
+				company_address_room_no,
+			</if>
+			<if test="companyAddressFloor != null">
+				company_address_floor,
+			</if>
+			<if test="companyAddressStreet != null">
+				company_address_street,
+			</if>
+			<if test="companyAddressQtr != null">
+				company_address_qtr,
+			</if>
+			<if test="companyAddressTownship != null">
+				company_address_township,
+			</if>
+			<if test="companyAddressCity != null">
+				company_address_city,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="daGuarantorInfoId != null">
+				#{daGuarantorInfoId,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="dob != null">
+				#{dob,jdbcType=DATE},
+			</if>
+			<if test="nrcNo != null">
+				#{nrcNo,jdbcType=VARCHAR},
+			</if>
+			<if test="nationality != null">
+				#{nationality,jdbcType=INTEGER},
+			</if>
+			<if test="nationalityOther != null">
+				#{nationalityOther,jdbcType=VARCHAR},
+			</if>
+			<if test="mobileNo != null">
+				#{mobileNo,jdbcType=VARCHAR},
+			</if>
+			<if test="residentTelNo != null">
+				#{residentTelNo,jdbcType=VARCHAR},
+			</if>
+			<if test="relationship != null">
+				#{relationship,jdbcType=INTEGER},
+			</if>
+			<if test="relationshipOther != null">
+				#{relationshipOther,jdbcType=VARCHAR},
+			</if>
+			<if test="currentAddress != null">
+				#{currentAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="typeOfResidence != null">
+				#{typeOfResidence,jdbcType=INTEGER},
+			</if>
+			<if test="typeOfResidenceOther != null">
+				#{typeOfResidenceOther,jdbcType=VARCHAR},
+			</if>
+			<if test="livingWith != null">
+				#{livingWith,jdbcType=INTEGER},
+			</if>
+			<if test="livingWithOther != null">
+				#{livingWithOther,jdbcType=VARCHAR},
+			</if>
+			<if test="gender != null">
+				#{gender,jdbcType=INTEGER},
+			</if>
+			<if test="maritalStatus != null">
+				#{maritalStatus,jdbcType=INTEGER},
+			</if>
+			<if test="yearOfStayYear != null">
+				#{yearOfStayYear,jdbcType=INTEGER},
+			</if>
+			<if test="yearOfStayMonth != null">
+				#{yearOfStayMonth,jdbcType=INTEGER},
+			</if>
+			<if test="companyName != null">
+				#{companyName,jdbcType=VARCHAR},
+			</if>
+			<if test="companyTelNo != null">
+				#{companyTelNo,jdbcType=VARCHAR},
+			</if>
+			<if test="companyAddress != null">
+				#{companyAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="department != null">
+				#{department,jdbcType=VARCHAR},
+			</if>
+			<if test="position != null">
+				#{position,jdbcType=VARCHAR},
+			</if>
+			<if test="yearOfServiceYear != null">
+				#{yearOfServiceYear,jdbcType=INTEGER},
+			</if>
+			<if test="yearOfServiceMonth != null">
+				#{yearOfServiceMonth,jdbcType=INTEGER},
+			</if>
+			<if test="monthlyBasicIncome != null">
+				#{monthlyBasicIncome,jdbcType=NUMERIC},
+			</if>
+			<if test="totalIncome != null">
+				#{totalIncome,jdbcType=NUMERIC},
+			</if>
+			<if test="createdTime != null">
+				#{createdTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createdBy != null">
+				#{createdBy,jdbcType=VARCHAR},
+			</if>
+			<if test="updatedTime != null">
+				#{updatedTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updatedBy != null">
+				#{updatedBy,jdbcType=VARCHAR},
+			</if>
+			<if test="delFlag != null">
+				#{delFlag,jdbcType=INTEGER},
+			</if>
+			<if test="daApplicationInfoId != null">
+				#{daApplicationInfoId,jdbcType=INTEGER},
+			</if>
+			<if test="currentAddressBuildingNo != null">
+				#{currentAddressBuildingNo,jdbcType=VARCHAR},
+			</if>
+			<if test="currentAddressRoomNo != null">
+				#{currentAddressRoomNo,jdbcType=VARCHAR},
+			</if>
+			<if test="currentAddressFloor != null">
+				#{currentAddressFloor,jdbcType=VARCHAR},
+			</if>
+			<if test="currentAddressStreet != null">
+				#{currentAddressStreet,jdbcType=VARCHAR},
+			</if>
+			<if test="currentAddressQtr != null">
+				#{currentAddressQtr,jdbcType=VARCHAR},
+			</if>
+			<if test="currentAddressTownship != null">
+				#{currentAddressTownship,jdbcType=INTEGER},
+			</if>
+			<if test="currentAddressCity != null">
+				#{currentAddressCity,jdbcType=INTEGER},
+			</if>
+			<if test="companyAddressBuildingNo != null">
+				#{companyAddressBuildingNo,jdbcType=VARCHAR},
+			</if>
+			<if test="companyAddressRoomNo != null">
+				#{companyAddressRoomNo,jdbcType=VARCHAR},
+			</if>
+			<if test="companyAddressFloor != null">
+				#{companyAddressFloor,jdbcType=VARCHAR},
+			</if>
+			<if test="companyAddressStreet != null">
+				#{companyAddressStreet,jdbcType=VARCHAR},
+			</if>
+			<if test="companyAddressQtr != null">
+				#{companyAddressQtr,jdbcType=VARCHAR},
+			</if>
+			<if test="companyAddressTownship != null">
+				#{companyAddressTownship,jdbcType=INTEGER},
+			</if>
+			<if test="companyAddressCity != null">
+				#{companyAddressCity,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+
+</mapper>

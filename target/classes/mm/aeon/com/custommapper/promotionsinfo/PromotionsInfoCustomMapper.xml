@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mm.aeon.com.custommapper.promotionsinfo.PromotionsInfoCustomMapper">
+
+	<resultMap id="promotionsInfoResultMap" type="mm.aeon.com.dto.promotionsinfo.PromotionsInfoResDto">
+		<id column="PROMOTIONS_INFO_ID" jdbcType="INTEGER" property="promotionsInfoId" />
+		<result column="TITLE_ENG" jdbcType="VARCHAR" property="titleEng" />
+		<result column="TITLE_MYN" jdbcType="VARCHAR" property="titleMyn" />
+		<result column="CONTENT_ENG" jdbcType="VARCHAR" property="contentEng" />
+		<result column="CONTENT_MYN" jdbcType="VARCHAR" property="contentMyn" />
+		<result column="DISPLAY_DATE" jdbcType="DATE" property="displayDate" />
+		<result column="PUBLISHED_FROM_DATE" jdbcType="DATE" property="publishedFromDate" />
+		<result column="PUBLISHED_TO_DATE" jdbcType="DATE" property="publishedToDate" />
+		<result column="IMAGE_PATH" jdbcType="VARCHAR" property="imagePath" />
+		<result column="LONGITUDE" jdbcType="VARCHAR" property="longitude" />
+		<result column="LATITUDE" jdbcType="VARCHAR" property="latitude" />
+		<result column="ANNOUNCEMENT_URL" jdbcType="VARCHAR" property="announcementUrl" />
+	</resultMap>
+	
+  <select id="getPromotionsInfoList" resultMap="promotionsInfoResultMap">
+		SELECT
+			PI.PROMOTIONS_INFO_ID,
+			PI.TITLE_ENG,
+			PI.TITLE_MYN,
+			PI.CONTENT_ENG,
+			PI.CONTENT_MYN,
+			PI.PUBLISHED_FROM_DATE AS DISPLAY_DATE,
+			PI.PUBLISHED_FROM_DATE,
+			PI.PUBLISHED_TO_DATE,
+			PI.IMAGE_PATH,
+			PI.LONGITUDE,
+			PI.LATITUDE,
+			PI.ANNOUNCEMENT_URL
+		FROM
+			promotions_info PI
+		WHERE
+			PI.DEL_FLAG = 0
+		<![CDATA[	
+			AND TO_CHAR(PI.PUBLISHED_FROM_DATE,'YYYYMMDD') <= TO_CHAR(now(),'YYYYMMDD')
+		]]>
+		<![CDATA[
+			AND TO_CHAR(PI.PUBLISHED_TO_DATE,'YYYYMMDD') >= TO_CHAR(now(),'YYYYMMDD')
+		]]>
+		ORDER BY
+			PI.PUBLISHED_FROM_DATE DESC, PI.PROMOTIONS_INFO_ID DESC
+	</select>
+	
+</mapper>

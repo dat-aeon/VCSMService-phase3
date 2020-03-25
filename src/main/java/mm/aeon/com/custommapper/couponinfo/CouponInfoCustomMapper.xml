@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mm.aeon.com.custommapper.couponinfo.CouponInfoCustomMapper">
+
+	<resultMap id="couponInfoResultMap" type="mm.aeon.com.dto.couponinfo.CouponInfoResDto">
+		<id column="COUPON_ID" jdbcType="INTEGER" property="couponId" />
+		<result column="COUPON_CODE" jdbcType="VARCHAR" property="couponCode" />
+		<result column="COUPON_NAME_MM" jdbcType="VARCHAR" property="couponNameMM" />
+		<result column="COUPON_NAME_EN" jdbcType="VARCHAR" property="couponNameEN" />
+		<result column="DESCRIPTION_MM" jdbcType="VARCHAR" property="descriptionMM" />
+		<result column="DESCRIPTION_EN" jdbcType="VARCHAR" property="descriptionEN" />
+		<result column="COUPON_AMOUNT" jdbcType="DOUBLE" property="couponAmount" />
+		<result column="GOODS_PRICE" jdbcType="DOUBLE" property="goodsPrice" />
+		<result column="START_TIME" jdbcType="TIMESTAMP" property="startTime" />
+		<result column="EXPIRE_TIME" jdbcType="TIMESTAMP" property="expiredTime" />
+		<result column="DISCOUNT_UNIT" jdbcType="VARCHAR" property="discountUnit" />
+		<result column="UNUSE_IMAGE_PATH" jdbcType="VARCHAR" property="unuseImagePath" />
+		<result column="USE_IMAGE_PATH" jdbcType="VARCHAR" property="useImagePath" />
+		<result column="TOTAL_NO" jdbcType="INTEGER" property="totalNo" />
+		<result column="SPECIAL_EVENT_MM" jdbcType="VARCHAR" property="specialEventMM" />
+		<result column="SPECIAL_EVENT_EN" jdbcType="VARCHAR" property="specialEventEN" />
+		<result column="CUSTOMER_ID" jdbcType="INTEGER" property="customerId" />
+		<result column="STATUS" jdbcType="VARCHAR" property="status" />
+		
+	</resultMap>
+
+	<select id="getCouponInfoListWithCustomerId" parameterType="java.lang.Integer" resultMap="couponInfoResultMap">
+		SELECT
+			CI.COUPON_ID,
+			CI.COUPON_CODE,
+			CI.COUPON_NAME_MM,
+			CI.COUPON_NAME_EN,
+			CI.DESCRIPTION_MM,
+			CI.DESCRIPTION_EN,
+			CI.COUPON_AMOUNT,
+			CI.GOODS_PRICE,
+			CI.START_TIME,
+			CI.EXPIRE_TIME,
+			CI.DISCOUNT_UNIT,
+			CI.UNUSE_IMAGE_PATH,
+			CI.USE_IMAGE_PATH,
+			CI.TOTAL_NO,
+			CI.SPECIAL_EVENT_MM,
+			CI.SPECIAL_EVENT_EN,
+			CC.CUSTOMER_ID,
+			CC.STATUS
+			
+		FROM
+			customer_coupon CC
+		LEFT JOIN
+			COUPON_INFO CI
+		ON
+			CC.COUPON_ID = CI.COUPON_ID
+		WHERE
+			CC.STATUS = '1'
+		AND
+			CI.DEL_FLAG = 0
+		AND
+			CC.CUSTOMER_ID = #{customerId,jdbcType=INTEGER}
+		<![CDATA[
+			AND TO_CHAR(CI.START_TIME,'YYYYMMDD') <= TO_CHAR(now(),'YYYYMMDD')
+		]]>
+		<![CDATA[
+			AND TO_CHAR(CI.EXPIRE_TIME,'YYYYMMDD') >= TO_CHAR(now(),'YYYYMMDD')
+		]]>
+		ORDER BY
+			CI.START_TIME DESC
+	</select>
+	
+	<select id="getShopCustomerCouponPasswordWithCustomerIdAndCouponId" parameterType="map" resultType="java.lang.String">
+		SELECT
+			SC.COUPON_PASSWORD
+		FROM
+			customer_coupon CC
+		LEFT JOIN
+			COUPON_INFO CI
+		ON
+			CC.COUPON_ID = CI.COUPON_ID
+		LEFT JOIN
+			SHOP_COUPON SC
+		ON
+			CC.COUPON_ID = SC.COUPON_ID
+		WHERE
+			CC.STATUS = '1'
+		AND
+			CI.DEL_FLAG = 0
+		AND
+			CC.COUPON_ID = #{couponId,jdbcType=INTEGER}
+		AND
+			CC.CUSTOMER_ID = #{customerId,jdbcType=INTEGER}
+		<![CDATA[
+			AND TO_CHAR(CI.START_TIME,'YYYYMMDD') <= TO_CHAR(now(),'YYYYMMDD')
+		]]>
+		<![CDATA[
+			AND TO_CHAR(CI.EXPIRE_TIME,'YYYYMMDD') >= TO_CHAR(now(),'YYYYMMDD')
+		]]>
+		ORDER BY
+			CI.START_TIME DESC
+	</select>
+
+</mapper>

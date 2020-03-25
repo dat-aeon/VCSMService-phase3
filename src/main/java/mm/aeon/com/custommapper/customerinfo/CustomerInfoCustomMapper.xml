@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mm.aeon.com.custommapper.customerinfo.CustomerInfoCustomMapper">
+
+	<resultMap id="customerInfoResultMap" type="mm.aeon.com.dto.customerinfo.CustomerInfoDto">
+		<id column="CUSTOMER_ID" jdbcType="INTEGER" property="customerId" />
+		<result column="CUSTOMER_NO" jdbcType="VARCHAR" property="customerNo" />
+		<result column="PHONE_NO" jdbcType="VARCHAR" property="phoneNo" />
+		<result column="CUSTOMER_TYPE_ID" jdbcType="INTEGER" property="customerTypeId" />
+		<result column="USER_TYPE_ID" jdbcType="INTEGER" property="userTypeId" />
+		<result column="NAME" jdbcType="VARCHAR" property="name" />
+		<result column="SALARY" jdbcType="DOUBLE" property="salary" />
+		<result column="DOB" jdbcType="DATE" property="dob" />
+		<result column="GENDER" jdbcType="SMALLINT" property="gender" />
+		<result column="COMPANY_NAME" jdbcType="VARCHAR" property="companyName" />
+		<result column="NRC_NO" jdbcType="VARCHAR" property="nrcNo" />
+		<result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+		<result column="JOIN_DATE" jdbcType="DATE" property="joinDate" />
+		<result column="PHOTO_PATH" jdbcType="VARCHAR" property="photoPath" />
+		<result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+		<result column="APPLOCK_FLAG" jdbcType="SMALLINT" property="applockFlag" />
+		<result column="LOGIN_DEVICE_ID" jdbcType="INTEGER" property="loginDeviceId" />
+	</resultMap>
+
+	<select id="getCustomerInfoWithPhoneNoAndNrcNo" parameterType="map" resultMap="customerInfoResultMap">
+		SELECT
+			CI.CUSTOMER_ID,
+			CI.CUSTOMER_NO,
+			CI.PHONE_NO,
+			CI.CUSTOMER_TYPE_ID,
+			CI.USER_TYPE_ID,
+			CI.NAME,
+			CI.SALARY,
+			CI.DOB,
+			CI.GENDER,
+			CI.COMPANY_NAME,
+			CI.NRC_NO,
+			CI.ADDRESS,
+			CI.JOIN_DATE,
+			CI.PHOTO_PATH,
+			PI.PASSWORD,
+			CI.APPLOCK_FLAG,
+			CI.LOGIN_DEVICE_ID
+		FROM
+			customer_info CI
+		LEFT JOIN
+			password_info PI
+		ON
+			CI.CUSTOMER_ID = PI.USER_ID
+		AND
+			CI.USER_TYPE_ID = PI.USER_TYPE_ID
+		WHERE
+			CI.PHONE_NO = #{phoneNo,jdbcType=VARCHAR}
+		AND
+			CI.NRC_NO = #{nrcNo,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getCustomerInfoWithPhoneNo" parameterType="java.lang.String" resultMap="customerInfoResultMap">
+		SELECT
+			CI.CUSTOMER_ID,
+			CI.CUSTOMER_NO,
+			CI.PHONE_NO,
+			CI.CUSTOMER_TYPE_ID,
+			CI.USER_TYPE_ID,
+			CI.NAME,
+			CI.SALARY,
+			CI.DOB,
+			CI.GENDER,
+			CI.COMPANY_NAME,
+			CI.NRC_NO,
+			CI.ADDRESS,
+			CI.JOIN_DATE,
+			CI.PHOTO_PATH,
+			PI.PASSWORD,
+			CI.APPLOCK_FLAG,
+			CI.LOGIN_DEVICE_ID
+		FROM
+			customer_info CI
+		LEFT JOIN
+			password_info PI
+		ON
+			CI.CUSTOMER_ID = PI.USER_ID
+		AND
+			CI.USER_TYPE_ID = PI.USER_TYPE_ID
+		WHERE
+			CI.PHONE_NO = #{phoneNo,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getCustomerInfoWithCustomerId" parameterType="java.lang.Integer" resultMap="customerInfoResultMap">
+		SELECT
+			CI.CUSTOMER_ID,
+			CI.CUSTOMER_NO,
+			CI.PHONE_NO,
+			CI.CUSTOMER_TYPE_ID,
+			CI.USER_TYPE_ID,
+			CI.NAME,
+			CI.SALARY,
+			CI.DOB,
+			CI.GENDER,
+			CI.COMPANY_NAME,
+			CI.NRC_NO,
+			CI.ADDRESS,
+			CI.JOIN_DATE,
+			CI.PHOTO_PATH,
+			PI.PASSWORD,
+			CI.APPLOCK_FLAG,
+			CI.LOGIN_DEVICE_ID
+		FROM
+			customer_info CI
+		LEFT JOIN
+			password_info PI
+		ON
+			CI.CUSTOMER_ID = PI.USER_ID
+		AND
+			CI.USER_TYPE_ID = PI.USER_TYPE_ID
+		WHERE
+			CI.CUSTOMER_ID = #{customerId,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getNrcNoCount" resultType="java.lang.Integer" parameterType="map">
+		SELECT
+			COUNT(*)
+		FROM
+			customer_info CI
+		WHERE
+			CI.NRC_NO = #{nrcNo,jdbcType=VARCHAR}
+		<if test="customerId != null">
+			AND CI.CUSTOMER_ID != #{customerId,jdbcType=INTEGER};
+		</if>
+	</select>
+	
+	<select id="getPhoneNoCount" resultType="java.lang.Integer" parameterType="map">
+		SELECT
+			COUNT(*)
+		FROM
+			customer_info CI
+		WHERE
+			CI.PHONE_NO = #{phoneNo,jdbcType=VARCHAR}
+		<if test="customerId != null">
+			AND CI.CUSTOMER_ID != #{customerId,jdbcType=INTEGER};
+		</if>
+	</select>
+	
+	<select id="checkAlreadyRegisteredCustomer" resultType="java.lang.Integer" parameterType="map">
+		SELECT
+			COUNT(*)
+		FROM
+			customer_info CI
+		WHERE
+			CI.PHONE_NO = #{phoneNo,jdbcType=VARCHAR}
+		AND
+			CI.NRC_NO = #{nrcNo,jdbcType=VARCHAR}
+	</select>
+	
+	<insert id="insertCustomerInfo" parameterType="mm.aeon.com.zgen.entity.CustomerInfo" useGeneratedKeys="true" keyProperty="customerId">
+    insert into customer_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="customerId != null">
+        customer_id,
+      </if>
+      <if test="customerNo != null">
+        customer_no,
+      </if>
+      <if test="phoneNo != null">
+        phone_no,
+      </if>
+      <if test="customerTypeId != null">
+        customer_type_id,
+      </if>
+      <if test="userTypeId != null">
+        user_type_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="salary != null">
+        salary,
+      </if>
+      <if test="dob != null">
+        dob,
+      </if>
+      <if test="gender != null">
+        gender,
+      </if>
+      <if test="companyName != null">
+        company_name,
+      </if>
+      <if test="nrcNo != null">
+        nrc_no,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="joinDate != null">
+        join_date,
+      </if>
+      <if test="photoPath != null">
+        photo_path,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="updatedBy != null">
+        updated_by,
+      </if>
+      <if test="createdTime != null">
+        created_time,
+      </if>
+      <if test="updatedTime != null">
+        updated_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="customerId != null">
+        #{customerId,jdbcType=INTEGER},
+      </if>
+      <if test="customerNo != null">
+        #{customerNo,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNo != null">
+        #{phoneNo,jdbcType=VARCHAR},
+      </if>
+      <if test="customerTypeId != null">
+        #{customerTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="userTypeId != null">
+        #{userTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="salary != null">
+        #{salary,jdbcType=NUMERIC},
+      </if>
+      <if test="dob != null">
+        #{dob,jdbcType=DATE},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=SMALLINT},
+      </if>
+      <if test="companyName != null">
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="nrcNo != null">
+        #{nrcNo,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="joinDate != null">
+        #{joinDate,jdbcType=DATE},
+      </if>
+      <if test="photoPath != null">
+        #{photoPath,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=SMALLINT},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedBy != null">
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null">
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="getAdminIdList" resultType="java.lang.Integer">
+		SELECT
+			UI.USER_ID
+		FROM
+			user_info UI
+		WHERE
+			UI.DEL_FLAG = 0
+		AND
+			UI.ALLOW_MESSAGING_FLAG = 1
+	</select>
+	
+	<select id="getAdminIdListForFreeMessaging" resultType="java.lang.Integer">
+		SELECT
+			UI.USER_ID
+		FROM
+			user_info UI
+		WHERE
+			UI.DEL_FLAG = 0
+		AND
+			UI.ALLOW_FREE_MESSAGING_FLAG = 1
+	</select>
+	
+	
+	<insert id="insertCustRoomInfo" parameterType="mm.aeon.com.zgen.entity.CustRoomInfo" useGeneratedKeys="true" keyProperty="custRoomId">
+    insert into cust_room_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="custRoomId != null">
+        cust_room_id,
+      </if>
+      <if test="customerId != null">
+        customer_id,
+      </if>
+      <if test="createdTime != null">
+        created_time,
+      </if>
+      <if test="lastSendTime != null">
+        last_send_time,
+      </if>
+      <if test="converLockFlag != null">
+        conver_lock_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="custRoomId != null">
+        #{custRoomId,jdbcType=INTEGER},
+      </if>
+      <if test="customerId != null">
+        #{customerId,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastSendTime != null">
+        #{lastSendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="converLockFlag != null">
+        #{converLockFlag,jdbcType=SMALLINT},
+      </if>
+    </trim>
+    ON CONFLICT (customer_id) DO NOTHING;
+  </insert>
+  
+  <insert id="insertAdminCustRoom" parameterType="map">
+		INSERT INTO admin_cust_room(
+			CUST_ROOM_ID,
+			USER_ID,
+			CREATED_TIME)
+		VALUES
+		<foreach collection="adminIdList" item="record"
+			index="index" open="(" separator="),(" close=")">
+			#{custRoomId, jdbcType=INTEGER},
+			#{record,jdbcType=INTEGER},
+			now()
+		</foreach>
+		ON CONFLICT (CUST_ROOM_ID, USER_ID) DO NOTHING;
+	</insert>
+	
+	<select id="checkAlreadyRegisteredCustomerRoom" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+		SELECT
+			COUNT(*)
+		FROM
+			cust_room_info CRI
+		WHERE
+			CRI.CUSTOMER_ID = #{customerId,jdbcType=INTEGER}
+	</select>
+	
+	<select id="checkCustomerInfoEditReqAlreadyExist" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+		SELECT
+			COUNT(*)
+		FROM
+			da_customer_info_edit_req DCIER
+		WHERE
+			DCIER.CUSTOMER_ID = #{customerId,jdbcType=INTEGER}
+		AND
+			DCIER.DEL_FLAG = FALSE
+	</select>
+	
+	<resultMap id="customerInfoEditReqResultMap" type="mm.aeon.com.dto.customerinfo.CustomerInfoEditReqDto">
+		<id column="DA_CUSTOMER_INFO_EDIT_REQ_ID" jdbcType="INTEGER" property="daCustomerInfoEditReqId" />
+		<result column="CUSTOMER_ID" jdbcType="INTEGER" property="customerId" />
+		<result column="CUSTOMER_NO" jdbcType="VARCHAR" property="customerNo" />
+		<result column="NAME" jdbcType="VARCHAR" property="name" />
+		<result column="SALARY" jdbcType="DOUBLE" property="salary" />
+		<result column="DOB" jdbcType="DATE" property="dob" />
+		<result column="GENDER" jdbcType="SMALLINT" property="gender" />
+		<result column="COMPANY_NAME" jdbcType="VARCHAR" property="companyName" />
+		<result column="NRC_NO" jdbcType="VARCHAR" property="nrcNo" />
+		<result column="PHONE_NO" jdbcType="VARCHAR" property="phoneNo" />
+		<result column="PHOTO_PATH" jdbcType="VARCHAR" property="photoPath" />
+		<result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+		<result column="STATUS" jdbcType="INTEGER" property="status" />
+		<result column="COMMENT" jdbcType="VARCHAR" property="comment" />
+	</resultMap>
+
+	<select id="getCustomerInfoEditReq" parameterType="java.lang.Integer" resultMap="customerInfoEditReqResultMap">
+		SELECT
+			DCIE.DA_CUSTOMER_INFO_EDIT_REQ_ID,
+			DCIE.CUSTOMER_ID,
+			DCIE.CUSTOMER_NO,
+			DCIE.NAME,
+			DCIE.SALARY,
+			DCIE.DOB,
+			DCIE.GENDER,
+			DCIE.COMPANY_NAME,
+			DCIE.NRC_NO,
+			DCIE.PHONE_NO,
+			DCIE.PHOTO_PATH,
+			DCIE.ADDRESS,
+			DCIE.STATUS,
+			DCIE.COMMENT
+		FROM
+			da_customer_info_edit_req DCIE
+		WHERE
+			DCIE.CUSTOMER_ID = #{customerId,jdbcType=INTEGER}
+		AND
+			DCIE.DEL_FLAG = FALSE
+	</select>
+  
+</mapper>

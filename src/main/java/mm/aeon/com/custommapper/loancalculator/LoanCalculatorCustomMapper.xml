@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mm.aeon.com.custommapper.loancalculator.LoanCalculatorCustomMapper">
+
+	<select id="getInterestRate" resultType="java.lang.Double">
+		SELECT
+			DII.INTEREST_RATE
+		FROM
+			da_interest_info DII
+		WHERE
+			DIL.DEL_FLAG = FALSE
+	</select>
+	
+	
+	<select id="getCompulsoryAmount" resultType="java.lang.Double">
+		SELECT
+			DCI.COMPULSORY_AMOUNT
+		FROM
+			da_compulsory_info DCI
+		WHERE
+			DCI.DEL_FLAG = FALSE
+	</select>
+	
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="mm.aeon.com.custommapper.loginuser.LoginUserCustomMapper">
+
+
+	<resultMap id="loginUserResultMap"
+		type="mm.aeon.com.zgen.entity.LoginUser">
+		<id column="LOGIN_USER_ID" jdbcType="BIGINT" property="loginUserId" />
+		<result column="USERNAME" jdbcType="VARCHAR"
+			property="username" />
+		<result column="USER_ID" jdbcType="BIGINT" property="userId" />
+		<result column="ROLE_ID" jdbcType="BIGINT" property="roleId" />
+		<result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+	</resultMap>
+
+	<select id="searchLoginUserWithEmailAndUserId"
+		parameterType="map" resultMap="loginUserResultMap">
+		SELECT
+			LS.LOGIN_USER_ID,
+			LS.USERNAME,
+			LS.USER_ID,
+			LS.ROLE_ID
+		FROM
+			login_user LS
+		WHERE
+			USERNAME = #{username,jdbcType=VARCHAR} 
+		AND 
+			USER_ID = #{userId,jdbcType=BIGINT};
+	</select>
+	
+	<select id="searchLoginUserWithUsername"
+		parameterType="java.lang.String" resultMap="loginUserResultMap">
+		SELECT
+			LS.LOGIN_USER_ID,
+			LS.USERNAME,
+			LS.USER_ID,
+			LS.ROLE_ID,
+			LS.PASSWORD
+		FROM
+			login_user LS
+		WHERE
+			USERNAME = #{username,jdbcType=VARCHAR}
+	</select>
+
+</mapper>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mm.aeon.com.custommapper.importcustomerinfo.ImportCustomerInfoCustomMapper">
+
+	<resultMap id="importCustomerInfoResultMap" type="mm.aeon.com.dto.importcustomerinfo.ImportCustomerInfoDto">
+		<id column="IMPORT_CUSTOMER_INFO_ID" jdbcType="INTEGER" property="importCustomerInfoId" />
+		<result column="CUSTOMER_NO" jdbcType="VARCHAR" property="customerNo" />
+		<result column="PHONE_NO" jdbcType="VARCHAR" property="phoneNo" />
+		<result column="MEMBERCARD_ID" jdbcType="VARCHAR" property="membercardId" />
+		<result column="MEMBERCARD_STATUS" jdbcType="INTEGER" property="membercardStatus" />
+		<result column="NAME" jdbcType="VARCHAR" property="name" />
+		<result column="SALARY" jdbcType="DOUBLE" property="salary" />
+		<result column="DOB" jdbcType="DATE" property="dob" />
+		<result column="GENDER" jdbcType="SMALLINT" property="gender" />
+		<result column="COMPANY_NAME" jdbcType="VARCHAR" property="companyName" />
+		<result column="NRC_NO" jdbcType="VARCHAR" property="nrcNo" />
+		<result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+	</resultMap>
+	
+	<select id="checkMemberWithDobAndNrc" resultType="java.lang.Integer" parameterType="map">
+		SELECT
+			COUNT(*)
+		FROM
+			import_customer_info ICI
+		WHERE
+			ICI.DEL_FLAG = 0
+		AND
+			ICI.DOB = #{dateOfBirth,jdbcType=DATE}
+		AND
+			ICI.NRC_NO = #{nrcNo,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getImportCustomerInfoWithDobAndNrc" resultMap="importCustomerInfoResultMap" parameterType="map">
+		SELECT
+			ICI.IMPORT_CUSTOMER_INFO_ID,
+			ICI.CUSTOMER_NO,
+			ICI.PHONE_NO,
+			ICI.MEMBERCARD_ID,
+			ICI.MEMBERCARD_STATUS,
+			ICI.NAME,
+			ICI.SALARY,
+			ICI.DOB,
+			ICI.GENDER,
+			ICI.COMPANY_NAME,
+			ICI.NRC_NO,
+			ICI.ADDRESS
+		FROM
+			import_customer_info ICI
+		WHERE
+			ICI.DEL_FLAG = 0
+		AND
+			ICI.DOB = #{dateOfBirth,jdbcType=DATE}
+		AND
+			ICI.NRC_NO = #{nrcNo,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getImportCustomerInfoWithCustomerNo" resultMap="importCustomerInfoResultMap" parameterType="java.lang.String">
+		SELECT
+			ICI.IMPORT_CUSTOMER_INFO_ID,
+			ICI.CUSTOMER_NO,
+			ICI.PHONE_NO,
+			ICI.MEMBERCARD_ID,
+			ICI.MEMBERCARD_STATUS,
+			ICI.NAME,
+			ICI.SALARY,
+			ICI.DOB,
+			ICI.GENDER,
+			ICI.COMPANY_NAME,
+			ICI.NRC_NO,
+			ICI.ADDRESS
+		FROM
+			import_customer_info ICI
+		WHERE
+			ICI.DEL_FLAG = 0
+		AND
+			ICI.CUSTOMER_NO = #{customerNo,jdbcType=VARCHAR}
+	</select>
+	
+	<resultMap id="customerAgreementInfoResultMap" type="mm.aeon.com.dto.custagreement.CustomerAgreementDto">
+		<id column="CUST_AGREEMENT_ID" jdbcType="INTEGER" property="custAgreementId" />
+		<result column="IMPORT_CUSTOMER_ID" jdbcType="INTEGER" property="importCustomerId" />
+		<result column="AGREEMENT_NO" jdbcType="VARCHAR" property="agreementNo" />
+		<result column="QR_SHOW" jdbcType="SMALLINT" property="qrShow" />
+		<result column="FINANCIAL_STATUS" jdbcType="SMALLINT" property="financialStatus" />
+		<result column="FINANCIAL_AMT" jdbcType="DOUBLE" property="financialAmt" />
+		<result column="FINANCIAL_TERM" jdbcType="SMALLINT" property="financialTerm" />
+		<result column="DA_APPLICATION_INFO_ID" jdbcType="INTEGER" property="daApplicationInfoId" />
+		<result column="APPLICATION_NO" jdbcType="VARCHAR" property="applicationNo" />
+		<result column="LAST_PAYMENT_DATE" jdbcType="DATE" property="lastPaymentDate" />
+	</resultMap>
+	
+	<select id="getCustomerAgreementListWithImportCustomerId" resultMap="customerAgreementInfoResultMap" parameterType="java.lang.Integer">
+		SELECT
+			CAL.CUST_AGREEMENT_ID,
+			CAL.IMPORT_CUSTOMER_ID,
+			CAL.AGREEMENT_NO,
+			CAL.QR_SHOW,
+			CAL.FINANCIAL_STATUS,
+			CAL.FINANCIAL_AMT,
+			CAL.FINANCIAL_TERM,
+			DAI.DA_APPLICATION_INFO_ID,
+			CAL.APPLICATION_NO,
+			CAL.LAST_PAYMENT_DATE
+		FROM
+			cust_agreement_list CAL
+		LEFT JOIN
+			da_application_info DAI
+		ON
+			CAL.APPLICATION_NO = DAI.APPLICATION_NO
+		WHERE
+			CAL.DEL_FLAG = 0
+		AND
+			CAL.IMPORT_CUSTOMER_ID = #{importCustomerId,jdbcType=INTEGER}
+		ORDER BY
+			CAL.CREATED_TIME DESC
+	</select>
+	
+	<select id="getNrcNoCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+		SELECT
+			COUNT(*)
+		FROM
+			import_customer_info ICI
+		WHERE
+			ICI.DEL_FLAG = 0
+		AND
+			ICI.NRC_NO = #{nrcNo,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getPhoneNoCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+		SELECT
+			COUNT(*)
+		FROM
+			import_customer_info ICI
+		WHERE
+			ICI.DEL_FLAG = 0
+		AND
+			ICI.PHONE_NO = #{phoneNo,jdbcType=VARCHAR}
+	</select>
+	
+</mapper>
