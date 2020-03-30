@@ -246,7 +246,7 @@ public class PurchaseInfoService {
 		channelSftp.connect();
 		channelSftp.cd("/");
 
-		String[] destinationPath = { imageBaseFilePath, checkingImageFolder, fileName.substring(0, 6), fileName.substring(7, 17) };
+		String[] destinationPath = { imageBaseFilePath, checkingImageFolder, fileName.split("/")[0] };
 
 		for (String directory : destinationPath) {
 			String currentDir = channelSftp.pwd();
@@ -306,8 +306,7 @@ public class PurchaseInfoService {
 		channelSftp = (ChannelSftp) session.openChannel("sftp");
 		channelSftp.connect();
 		channelSftp.cd("/");
-
-		String[] destinationPath = { imageBaseFilePath, checkingImageFolder, fileName.substring(0, 6), fileName.substring(7, 17) };
+		String[] destinationPath = { imageBaseFilePath, checkingImageFolder, fileName.split("/")[0] };
 
 		for (String directory : destinationPath) {
 			String currentDir = channelSftp.pwd();
